@@ -1,1 +1,3 @@
-# my_demo_repo
+# DevOps Projects
+
+* This directory contains Terraform, Docker, Kubernetes, Ansible and Jenkins projects...
