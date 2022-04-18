@@ -1,0 +1,12 @@
+ #!/bin/bash
+yum update -y
+yum install python3 -y
+pip3 install flask
+pip3 install flask-mysql
+echo "${rds_endpoint}" > /home/ec2-user/dbserver.endpoint
+cd /home/ec2-user && mkdir templates
+curl https://raw.githubusercontent.com/yunusdlbs/AWS-Linux-Flask-Projects/main/AWS/Project-003-Phonebook-Application/phonebook-app.py -o ./phonebook-app.py
+curl https://raw.githubusercontent.com/yunusdlbs/AWS-Linux-Flask-Projects/main/AWS/Project-003-Phonebook-Application/templates/index.html -o ./templates/index.html
+curl https://raw.githubusercontent.com/yunusdlbs/AWS-Linux-Flask-Projects/main/AWS/Project-003-Phonebook-Application/templates/add-update.html -o ./templates/add-update.html
+curl https://raw.githubusercontent.com/yunusdlbs/AWS-Linux-Flask-Projects/main/AWS/Project-003-Phonebook-Application/templates/delete.html -o ./templates/delete.html
+python3 phonebook-app.py
