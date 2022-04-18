@@ -1,3 +1,6 @@
 # DevOps Projects
 
-* This directory contains Terraform, Docker, Kubernetes, Ansible and Jenkins projects...
+* This directory contains Terraform Projects;
+
+    - Kittens-Caurosel
+    - Roman-Numbers
