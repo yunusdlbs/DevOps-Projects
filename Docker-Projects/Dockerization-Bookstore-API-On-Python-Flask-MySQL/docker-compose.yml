@@ -4,7 +4,7 @@ services:
   database:
     image: mysql:5.7
     environment:
-      MYSQL_DATABASE: 'database'
+      MYSQL_DATABASE: 'bookstore_db'
       MYSQL_USER: 'yakut'
       MYSQL_PASSWORD: 'Yakut2013'
       MYSQL_ROOT_PASSWORD: 'R12345r'
