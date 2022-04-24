@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  database:
+    image: mysql:5.7
+    container_name: database
+    environment:
+      MYSQL_ROOT_PASSWORD: R12345r
+      MYSQL_DATABASE: bookstore_db
+      MYSQL_USER: yakut
+      MYSQL_PASSWORD: Yakut2013
+    networks:
+      - yakut-net
+
+  myapp:
+    image: yunusdelibas/bookstore-api:1.0
+    container_name: myapp
+    restart: always
+    depends_on:
+      - database
+    ports:
+      - "80:80"
+    networks:
+      - yakut-net
+networks:
+  yakut-net:
