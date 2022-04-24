@@ -16,7 +16,7 @@ provider "aws" {
 }
 
 provider "github" {
-  token = "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" # Configuration options
+  token = "" # Configuration options, enter your token here...
 }
 
 resource "github_repository" "bookstore" {
@@ -88,7 +88,7 @@ resource "aws_instance" "name" {
           -o /usr/local/bin/docker-compose
           chmod +x /usr/local/bin/docker-compose
           mkdir -p /home/ec2-user/bookstore-api
-          TOKEN="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"
+          TOKEN="" # Enter your token here...
           FOLDER="https://$TOKEN@raw.githubusercontent.com/yunusdlbs/Bookstore-API/main/"
           curl -s --create-dirs -o "/home/ec2-user/bookstore-api/bookstore-api.py" -L "$FOLDER"bookstore-api.py
           curl -s --create-dirs -o "/home/ec2-user/bookstore-api/requirements.txt" -L "$FOLDER"requirements.txt
