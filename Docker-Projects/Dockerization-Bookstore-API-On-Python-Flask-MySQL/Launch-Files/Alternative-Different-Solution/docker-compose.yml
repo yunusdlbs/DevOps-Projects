@@ -8,7 +8,7 @@ services:
       MYSQL_ROOT_PASSWORD: R12345r
       MYSQL_DATABASE: bookstore_db
       MYSQL_USER: yakut
-      MYSQL_PASSWORD: Yakut2013
+      MYSQL_PASSWORD: # Enter your password here.
     networks:
       - yakut-net
 
