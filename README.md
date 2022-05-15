@@ -1,6 +1,6 @@
 # DevOps Projects
 
-* This directory contains Terraform Projects;
+* This directory contains DevOps Projects;
 
-    - Kittens-Caurosel
-    - Roman-Numbers
+    - Terraform
+    - Docker
