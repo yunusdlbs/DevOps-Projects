@@ -1,0 +1,128 @@
+- name: configure postgresql
+  hosts: _ansible_postgresql
+  become: true
+  vars_files:
+    - secret.yml
+  tasks:
+    - name: update the node
+      yum:
+        name: '*'
+        state: latest
+
+    - name: uninstall old versions
+      yum:
+        name: "{{ item }}"
+        state: removed
+      loop:
+        - docker
+        - docker-client
+        - docker-client-latest
+        - docker-common
+        - docker-latest
+        - docker-latest-logrotate
+        - docker-logrotate
+        - docker-engine
+
+    - name: install yum-utils
+      yum:
+        name: yum-utils
+        state: latest
+
+    - name: add docker repo
+      get_url: 
+        url: https://download.docker.com/linux/centos/docker-ce.repo
+        dest: /etc/yum.repos.d/docker-ce.repo
+
+    - name: install docker
+      yum:
+        name: docker-ce
+        state: latest
+
+    - name: install pip
+      package:
+        name: python3-pip
+        state: present
+
+    - name: install docker SDK
+      pip: 
+        name: docker
+
+    - name: add ec2-user docker group
+      user:
+        name: ec2-user
+        group: docker
+        append: yes
+
+    - name: start docker service
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+
+    - name: create postgresql folder
+      file:
+        path: /home/ec2-user/postgresql
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: copy sql script
+      copy:
+        src: /home/ec2-user/ansible/ansible-Project/postgres/init.sql
+        dest: /home/ec2-user/postgresql
+
+    - name: copy the dockerfile
+      copy: 
+        src: /home/ec2-user/ansible/ansible-Project/postgres/Dockerfile
+        dest: /home/ec2-user/postgresql 
+
+    - name: remove container and image if exist
+      shell: "docker ps -q --filter 'name=yakut_postgre' && docker stop yakut_postgre && docker rm -fv yakut_postgre && docker image rm -f yunusdelibas/postgre || echo 'Not Found'"
+    
+    - name: build container image
+      docker_image:
+        name: yunusdelibas/postgre
+        build: 
+          path: /home/ec2-user/postgresql
+        source: build
+        state: present
+
+    - name: create postgresql container
+      docker_container:
+        name: yakut_postgre
+        image: yunusdelibas/postgre
+        state: started
+        ports:
+          - '5432:5432'
+        env:
+          POSTGRES_PASSWORD: "{{ password }}"
+        volumes:
+          - /db-data:/var/lib/postgresql/data
+      register: container_info
+
+    - name: print container info
+      debug:
+        var: container_info
+
+    # - name: login to dockerhub
+    #   docker_login:
+    #     username: yunusdelibas
+    #     password: 2005Maltepe
+    #     email: yunusdelibas@outlook.com
+
+    # - name: build container image and push to dockerhub
+    #   docker_image:
+    #     name: yunusdelibas/postgre
+    #     build: 
+    #       path: /home/ec2-user/postgresql
+    #     source: build
+    #     state: present
+    #     push: yes
+    #     repository: yunusdelibas/postgre
+    #     tag: 1.0
+
+    
+      
+    
+        
